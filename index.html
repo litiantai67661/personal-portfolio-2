@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>潘显峰作品集</title>
+  <style>
+    :root {
+      --ink: #f6f3ec;
+      --dark: #0f1110;
+      --muted: rgba(246, 243, 236, .72);
+      --line: rgba(246, 243, 236, .22);
+      --paper: #efede7;
+      --paper-ink: #171717;
+      --rust: #b35e3c;
+      --blue: #2d668c;
+      --shadow: 0 26px 90px rgba(0, 0, 0, .28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: var(--dark);
+      color: var(--ink);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .fit img {
+      object-fit: contain;
+      padding: 10px;
+      background: rgba(239, 237, 231, .88);
+    }
+
+    .site {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+      padding: 18px clamp(18px, 4vw, 58px);
+      color: white;
+      mix-blend-mode: difference;
+      pointer-events: none;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      min-width: 0;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      letter-spacing: .1em;
+      white-space: nowrap;
+    }
+
+    .brand span,
+    .nav button,
+    .eyebrow,
+    .kicker,
+    .poster-meta,
+    .scroll-hint,
+    .drawer p,
+    .drawer li,
+    .media-caption,
+    .counter {
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .brand span {
+      opacity: .72;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      pointer-events: auto;
+    }
+
+    .nav button {
+      opacity: .7;
+      padding: 5px 0;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav button.is-active {
+      opacity: 1;
+      border-color: currentColor;
+    }
+
+    .stage {
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .stage::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .poster {
+      position: relative;
+      height: 100vh;
+      min-height: 680px;
+      display: grid;
+      place-items: stretch;
+      overflow: hidden;
+      scroll-snap-align: start;
+      background: #111;
+      isolation: isolate;
+    }
+
+    .poster-media {
+      position: absolute;
+      inset: -4vh -3vw;
+      z-index: -2;
+      transform: translateY(calc(var(--scroll, 0) * -22px)) scale(1.04);
+      transition: transform .45s ease-out;
+    }
+
+    .poster.fit-bg .poster-media {
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #121311;
+      transform: translateY(calc(var(--scroll, 0) * -12px)) scale(1);
+    }
+
+    .poster.fit-bg .poster-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: .92;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 72% 46%, transparent 0 24%, rgba(0,0,0,.2) 48%, rgba(0,0,0,.68) 100%),
+        linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.18) 58%, rgba(0,0,0,.56));
+    }
+
+    .poster.light {
+      color: var(--paper-ink);
+      background: var(--paper);
+    }
+
+    .poster.light::before {
+      background:
+        linear-gradient(90deg, rgba(239,237,231,.92), rgba(239,237,231,.34) 52%, rgba(239,237,231,.86)),
+        linear-gradient(0deg, rgba(239,237,231,.14), rgba(239,237,231,.08));
+    }
+
+    .poster-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(360px, .42fr) minmax(420px, .58fr);
+      gap: clamp(28px, 5vw, 78px);
+      width: min(100%, 1620px);
+      height: 100%;
+      margin: 0 auto;
+      padding: clamp(86px, 12vh, 132px) clamp(24px, 5vw, 76px) clamp(46px, 8vh, 88px);
+      align-items: end;
+    }
+
+    .poster.center .poster-inner {
+      grid-template-columns: 1fr;
+      align-items: center;
+      text-align: center;
+    }
+
+    .poster-copy {
+      display: grid;
+      gap: 20px;
+      align-content: end;
+      max-width: 760px;
+      min-width: 0;
+    }
+
+    .poster.center .poster-copy {
+      justify-self: center;
+      max-width: 980px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      padding: 4px 10px;
+      border: 1px solid currentColor;
+      opacity: .86;
+      letter-spacing: .14em;
+      font-weight: 700;
+    }
+
+    .poster.center .eyebrow {
+      justify-self: center;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(56px, 8vw, 138px);
+      line-height: .94;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    h2 {
+      font-size: clamp(44px, 6vw, 104px);
+      line-height: .98;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    .lead {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: clamp(14px, 1.25vw, 18px);
+      line-height: 1.9;
+    }
+
+    .poster.light .lead,
+    .poster.light .poster-meta,
+    .poster.light .kicker,
+    .poster.light .media-caption {
+      color: rgba(23, 23, 23, .66);
+    }
+
+    .poster-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .primary,
+    .secondary {
+      min-height: 42px;
+      padding: 9px 18px;
+      border: 1px solid currentColor;
+      font-size: 13px;
+      letter-spacing: .03em;
+      backdrop-filter: blur(12px);
+    }
+
+    .primary {
+      color: var(--dark);
+      background: rgba(246,243,236,.92);
+      border-color: rgba(246,243,236,.92);
+    }
+
+    .poster.light .primary {
+      color: var(--ink);
+      background: var(--paper-ink);
+      border-color: var(--paper-ink);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,.08);
+    }
+
+    .poster-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 720px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .poster-meta b {
+      display: block;
+      color: currentColor;
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .visual-card {
+      align-self: center;
+      justify-self: end;
+      width: min(100%, 760px);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      transform: translateY(calc(var(--scroll, 0) * 18px));
+      transition: transform .45s ease-out;
+    }
+
+    .visual-stack {
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .visual-stack figure,
+    .model-stage,
+    .video-stage {
+      min-height: 0;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: rgba(255,255,255,.08);
+    }
+
+    .visual-stack figure:first-child {
+      grid-row: span 2;
+    }
+
+    .landscape-mosaic {
+      align-self: center;
+      display: grid;
+      grid-template-rows: 1.08fr .78fr .78fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .landscape-mosaic.compact {
+      grid-template-rows: 1fr .72fr;
+    }
+
+    .landscape-mosaic figure {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+      box-shadow: var(--shadow);
+      background: rgba(255,255,255,.08);
+    }
+
+    .landscape-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .landscape-pair figure {
+      aspect-ratio: 16 / 9;
+    }
+
+    .workflow {
+      align-self: center;
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .workflow-screen {
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: rgba(0,0,0,.18);
+    }
+
+    .workflow-screen.ratio-4-3 {
+      aspect-ratio: 4 / 3;
+      justify-self: center;
+      width: min(100%, 840px);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .timeline button {
+      min-height: 70px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.28);
+      text-align: left;
+      background: rgba(0,0,0,.12);
+    }
+
+    .poster.light .timeline button {
+      border-color: rgba(23,23,23,.22);
+      background: rgba(255,255,255,.34);
+    }
+
+    .timeline button.is-active {
+      border-color: var(--rust);
+      background: rgba(179,94,60,.16);
+    }
+
+    .timeline b {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rust);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .timeline span {
+      display: block;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .media-caption {
+      min-height: 48px;
+      color: var(--muted);
+    }
+
+    .model-stage,
+    .video-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 16 / 9;
+      border: 1px dashed rgba(255,255,255,.38);
+      text-align: center;
+      padding: 30px;
+    }
+
+    .model-stage::before {
+      content: "";
+      width: min(38vw, 420px);
+      aspect-ratio: 1 / .62;
+      border: 1px solid rgba(246,243,236,.42);
+      transform: perspective(760px) rotateX(58deg) rotateZ(-28deg);
+      background:
+        linear-gradient(135deg, rgba(45,102,140,.36), rgba(179,94,60,.14)),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.16) 0 1px, transparent 1px 22px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px 22px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.34);
+      animation: modelFloat 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes modelFloat {
+      from { transform: perspective(760px) rotateX(58deg) rotateZ(-28deg) translateY(0); }
+      to { transform: perspective(760px) rotateX(58deg) rotateZ(-22deg) translateY(-12px); }
+    }
+
+    .slot-text {
+      position: absolute;
+      inset: auto 26px 24px;
+    }
+
+    .slot-text strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: clamp(22px, 2.8vw, 42px);
+      letter-spacing: .08em;
+    }
+
+    .scroll-hint {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 65;
+      display: grid;
+      gap: 7px;
+      justify-items: center;
+      color: white;
+      transform: translateX(-50%);
+      mix-blend-mode: difference;
+    }
+
+    .scroll-hint i {
+      width: 1px;
+      height: 28px;
+      background: currentColor;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scaleY(.45); opacity: .45; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    .side-rail {
+      position: fixed;
+      right: clamp(14px, 2vw, 26px);
+      top: 50%;
+      z-index: 66;
+      display: grid;
+      gap: 8px;
+      transform: translateY(-50%);
+    }
+
+    .side-rail button {
+      width: 8px;
+      height: 8px;
+      border: 1px solid white;
+      opacity: .42;
+      mix-blend-mode: difference;
+    }
+
+    .side-rail button.is-active {
+      height: 30px;
+      opacity: 1;
+      background: white;
+    }
+
+    .counter {
+      position: fixed;
+      left: clamp(18px, 4vw, 58px);
+      bottom: 24px;
+      z-index: 65;
+      color: white;
+      mix-blend-mode: difference;
+    }
+
+    .drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 90;
+      width: min(520px, 100vw);
+      padding: 32px;
+      color: var(--paper-ink);
+      background: rgba(239,237,231,.96);
+      box-shadow: -24px 0 80px rgba(0,0,0,.24);
+      transform: translateX(100%);
+      transition: transform .42s cubic-bezier(.2,.82,.17,1);
+      overflow: auto;
+    }
+
+    .drawer.is-open {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(23,23,23,.18);
+    }
+
+    .drawer h3 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .drawer-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(23,23,23,.28);
+      font-size: 22px;
+    }
+
+    .drawer-section {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .drawer-section b {
+      color: var(--rust);
+      font-size: 13px;
+      letter-spacing: .08em;
+    }
+
+    .drawer ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      background: rgba(0,0,0,.88);
+    }
+
+    .lightbox.is-open {
+      display: grid;
+    }
+
+    .lightbox img {
+      width: min(94vw, 1480px);
+      height: min(86vh, 880px);
+      object-fit: contain;
+    }
+
+    .lightbox button {
+      position: fixed;
+      top: 22px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      color: white;
+      border: 1px solid rgba(255,255,255,.42);
+      font-size: 22px;
+    }
+
+    .clickable {
+      cursor: zoom-in;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      html,
+      body {
+        overflow: auto;
+      }
+
+      .topbar,
+      .scroll-hint,
+      .side-rail,
+      .counter {
+        display: none;
+      }
+
+      .stage {
+        overflow: visible;
+        height: auto;
+        scroll-snap-type: none;
+      }
+
+      .poster {
+        min-height: 100vh;
+        height: auto;
+      }
+
+      .poster-inner,
+      .home .poster-inner,
+      .poster.center .poster-inner {
+        grid-template-columns: 1fr;
+        padding: 44px 18px;
+        min-height: 100vh;
+      }
+
+      .poster-copy {
+        align-content: start;
+      }
+
+      .poster-meta,
+      .timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .visual-card,
+      .workflow,
+      .model-stage,
+      .video-stage {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: clamp(42px, 16vw, 70px);
+      }
+
+      h2 {
+        font-size: clamp(36px, 12vw, 58px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="topbar">
+      <div class="brand">
+        <strong>潘显峰</strong>
+        <span>建筑设计作品集 / 海报滚动版</span>
+      </div>
+      <nav class="nav" aria-label="章节导航"></nav>
+    </header>
+
+    <main class="stage">
+      <section class="poster center" data-title="卷首" data-drawer="home">
+        <div class="poster-media">
+          <img src="portfolio-01.jpg" alt="别墅自宅夜景">
+        </div>
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">县域建筑实践</span>
+            <h1>真实项目<br>与工具流</h1>
+            <p class="lead">用官网式大海报来讲作品集：大图先建立记忆点，再通过滚动、切换、视频和模型入口展示过程。</p>
+            <div class="poster-actions">
+              <button class="primary" data-next>向下浏览</button>
+              <button class="secondary" data-open-drawer>查看结构</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster" data-title="主案" data-drawer="house">
+        <div class="poster-media">
+          <img src="portfolio-02.jpg" alt="浙江天台某村自宅">
+        </div>
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">主案一</span>
+            <h2>商业酒店用地<br>改自宅</h2>
+            <p class="lead">商业酒店审批、自宅体验、分期建设与后期扩建，在同一个项目里同时处理。</p>
+            <div class="poster-meta">
+              <span><b>2024-2025</b>独立设计</span>
+              <span><b>非智绘</b>草模推敲 / 实时表现</span>
+              <span><b>分期</b>三块地连续建设</span>
+            </div>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>展开设计难点</button>
+              <button class="secondary" data-lightbox="portfolio-02.jpg">查看大图</button>
+            </div>
+          </div>
+          <figure class="visual-card clickable" data-lightbox="portfolio-03.jpg">
+            <img src="portfolio-03.jpg" alt="自宅局部视角">
+          </figure>
+        </div>
+      </section>
+
+      <section class="poster light" data-title="过程" data-drawer="process">
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">过程证据</span>
+            <h2>不是只放<br>最终效果图</h2>
+            <p class="lead">废弃方案、截图、阶段材料可以用网页交互拆开看。静态纸质稿往往很难把这些内容讲清楚。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>查看过程说明</button>
+            </div>
+          </div>
+          <div class="workflow" data-workflow="process">
+            <figure class="workflow-screen ratio-4-3 clickable fit">
+              <img src="portfolio-04.jpg" alt="过程材料截图">
+            </figure>
+            <div class="timeline">
+              <button class="is-active" data-img="portfolio-04.jpg" data-note="佐证材料 / 清单截图 / 沟通证据"><b>01</b><span>佐证材料</span></button>
+              <button data-img="portfolio-05.jpg" data-note="早期废弃方向，用来说明判断变化"><b>02</b><span>废弃方案</span></button>
+              <button data-img="portfolio-06.jpg" data-note="同一任务下的形体比较"><b>03</b><span>形体比较</span></button>
+              <button data-img="portfolio-07.jpg" data-note="方案归档，后续可补手写说明"><b>04</b><span>归档</span></button>
+            </div>
+            <p class="media-caption">佐证材料 / 清单截图 / 沟通证据</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster fit-bg" data-title="庭院" data-drawer="garden">
+        <div class="poster-media">
+          <img src="portfolio-08.jpg" alt="竹林茶室">
+        </div>
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">山地庭院</span>
+            <h2>航拍建模<br>进入设计</h2>
+            <p class="lead">复杂山地项目不只是渲染问题，前期场地理解和沟通效率同样重要。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>项目方法</button>
+            </div>
+          </div>
+          <div class="landscape-mosaic compact">
+            <figure class="clickable" data-lightbox="portfolio-09.jpg"><img src="portfolio-09.jpg" alt="茶室外景"></figure>
+            <div class="landscape-pair">
+              <figure class="clickable" data-lightbox="portfolio-10.jpg"><img src="portfolio-10.jpg" alt="茶室室内"></figure>
+              <figure class="clickable" data-lightbox="portfolio-11.jpg"><img src="portfolio-11.jpg" alt="庭院一角"></figure>
+            </div>
+            <figure class="clickable" data-lightbox="portfolio-08.jpg"><img src="portfolio-08.jpg" alt="竹林茶室"></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster light" data-title="公建" data-drawer="public">
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">公建 / 投标 / 可研</span>
+            <h2>真实工作语境<br>比单张图重要</h2>
+            <p class="lead">医疗康养中心、邻里中心投标、兵役服务站可研，适合用网页做成可展开的项目索引。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>展开项目列表</button>
+            </div>
+          </div>
+          <div class="landscape-mosaic">
+            <figure class="clickable fit" data-lightbox="portfolio-12.jpg"><img src="portfolio-12.jpg" alt="兵役服务站航拍"></figure>
+            <div class="landscape-pair">
+              <figure class="clickable" data-lightbox="portfolio-13.jpg"><img src="portfolio-13.jpg" alt="康养中心"></figure>
+              <figure class="clickable" data-lightbox="portfolio-14.jpg"><img src="portfolio-14.jpg" alt="邻里中心投标"></figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster fit-bg" data-title="智绘" data-drawer="ai">
+        <div class="poster-media">
+          <img src="portfolio-15.jpg" alt="老旧小区改造投标效果图">
+        </div>
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">智能表现</span>
+            <h2>从任务<br>到可用图</h2>
+            <p class="lead">这部分更适合做成动态工作流：条件、风格、批量出图、投标表达，而不是堆几张成图。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>查看工作流</button>
+            </div>
+          </div>
+          <div class="workflow" data-workflow="ai">
+            <figure class="workflow-screen ratio-4-3 clickable fit">
+              <img src="portfolio-15.jpg" alt="投标效果图主效果">
+            </figure>
+            <div class="timeline">
+              <button class="is-active" data-img="portfolio-15.jpg" data-note="主效果 / 最终中标项目"><b>01</b><span>主效果</span></button>
+              <button data-img="portfolio-16.jpg" data-note="入口视角 / 控制步行尺度"><b>02</b><span>入口</span></button>
+              <button data-img="portfolio-17.jpg" data-note="水景界面 / 组织场景氛围"><b>03</b><span>界面</span></button>
+              <button data-img="portfolio-18.jpg" data-note="社区商业 / 节点传播图"><b>04</b><span>节点</span></button>
+            </div>
+            <p class="media-caption">主效果 / 最终中标项目</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster light" data-title="视频" data-drawer="video">
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">视频预留</span>
+            <h2>短视频开场<br>替代静态封面</h2>
+            <p class="lead">后续你上传航拍、漫游或讲解视频后，这一屏可以变成自动播放的项目开场。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>视频使用策略</button>
+            </div>
+          </div>
+          <div class="video-stage">
+            <div class="slot-text">
+              <strong>视频占位</strong>
+              <p class="lead">可放 5-8 秒循环背景、完整项目视频或模型漫游。建议每个重点项目只放一段短视频，避免页面变重。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="poster" data-title="模型" data-drawer="model">
+        <div class="poster-media">
+          <img src="portfolio-19.jpg" alt="无人机建模成果">
+        </div>
+        <div class="poster-inner">
+          <div class="poster-copy">
+            <span class="eyebrow">模型设计</span>
+            <h2>航测建模<br>与三维入口</h2>
+            <p class="lead">这一屏是网页价值最明显的地方：后续可以接 `.glb`、高斯模型、航拍漫游或交互式场地模型。</p>
+            <div class="poster-actions">
+              <button class="primary" data-open-drawer>模型接入说明</button>
+            </div>
+          </div>
+          <div class="model-stage">
+            <div class="slot-text">
+              <strong>模型预留位</strong>
+              <p class="lead">现在用动态网格表示，后续替换为可旋转模型或嵌入式高斯场景。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="side-rail" aria-label="章节位置"></div>
+    <div class="counter">01 / 08</div>
+    <div class="scroll-hint"><span>向下滚动</span><i></i></div>
+
+    <aside class="drawer" aria-hidden="true">
+      <div class="drawer-head">
+        <h3>章节说明</h3>
+        <button class="drawer-close" aria-label="关闭">×</button>
+      </div>
+      <div class="drawer-body"></div>
+    </aside>
+
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="图片预览">
+      <button aria-label="关闭">×</button>
+      <img alt="">
+    </div>
+  </div>
+
+  <script>
+    const stage = document.querySelector('.stage');
+    const posters = Array.from(document.querySelectorAll('.poster'));
+    const nav = document.querySelector('.nav');
+    const rail = document.querySelector('.side-rail');
+    const counter = document.querySelector('.counter');
+    const drawer = document.querySelector('.drawer');
+    const drawerBody = document.querySelector('.drawer-body');
+    const drawerTitle = drawer.querySelector('h3');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+
+    const drawerContent = {
+      home: ['互动结构', ['上下整屏滚动，不再是一页页静态文本。', '图片可以放大，过程可以切换，视频和模型有明确入口。', '后续素材变多时，可以继续扩展成完整网站。']],
+      house: ['主案难点', ['甲方需要精致体面且有家的味道，拒绝会所风和售楼部风格。', '三块相连土地分期施工，需要考虑独立体验和衔接方式。', '审批为商业酒店，后续改造为自宅，需要平衡合规与居住体验。']],
+      process: ['过程材料', ['过程页适合放废弃方案、手写资料、截图证据。', '网页可以按阶段切换，比纸质稿更适合解释方案如何形成。']],
+      garden: ['庭院方法', ['复杂山地项目先用无人机航拍建模降低前期判断成本。', '庭院和茶室图像以氛围表达为主，后续可以加入场地分析层。']],
+      public: ['公建项目', ['医疗康养中心：独立设计，正在审批用地。', '椒江邻里中心：施工投标文本与渲染。', '兵役服务站：可研阶段，适合做项目索引入口。']],
+      ai: ['智能表现工作流', ['从原始条件和总平出发，控制风格并批量出图。', '把最终中标结果与过程图并列，避免只展示“好看图”。']],
+      video: ['视频策略', ['每个重点项目只放短循环视频做开场。', '完整视频放在详情抽屉或项目内页，避免首屏过重。', '可以接入航拍、漫游、讲解、施工记录。']],
+      model: ['模型接入', ['后续可接入 glb 模型、WebGL 场景或高斯模型链接。', '模型页可以做热点标注，说明航拍采集、场地重建和设计判断。']]
+    };
+
+    function two(n) {
+      return String(n + 1).padStart(2, '0');
+    }
+
+    function scrollToPoster(index) {
+      posters[index]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    posters.forEach((poster, index) => {
+      const button = document.createElement('button');
+      button.textContent = poster.dataset.title;
+      button.addEventListener('click', () => scrollToPoster(index));
+      nav.append(button);
+
+      const dot = document.createElement('button');
+      dot.setAttribute('aria-label', poster.dataset.title);
+      dot.addEventListener('click', () => scrollToPoster(index));
+      rail.append(dot);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const index = posters.indexOf(visible.target);
+      document.querySelectorAll('.nav button').forEach((button, i) => button.classList.toggle('is-active', i === index));
+      document.querySelectorAll('.side-rail button').forEach((button, i) => button.classList.toggle('is-active', i === index));
+      counter.textContent = `${two(index)} / ${String(posters.length).padStart(2, '0')}`;
+    }, { root: stage, threshold: [.55] });
+
+    posters.forEach(poster => observer.observe(poster));
+
+    stage.addEventListener('scroll', () => {
+      const viewH = stage.clientHeight || 1;
+      posters.forEach(poster => {
+        const rect = poster.getBoundingClientRect();
+        const value = Math.max(-1, Math.min(1, rect.top / viewH));
+        poster.style.setProperty('--scroll', value.toFixed(3));
+      });
+    }, { passive: true });
+
+    document.querySelectorAll('[data-next]').forEach(button => {
+      button.addEventListener('click', () => scrollToPoster(1));
+    });
+
+    document.querySelectorAll('[data-open-drawer]').forEach(button => {
+      button.addEventListener('click', () => {
+        const poster = button.closest('.poster');
+        const [title, items] = drawerContent[poster.dataset.drawer] || ['章节说明', []];
+        drawerTitle.textContent = title;
+        drawerBody.innerHTML = `
+          <div class="drawer-section">
+            <b>内容说明</b>
+            <ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>
+          </div>
+        `;
+        drawer.classList.add('is-open');
+        drawer.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    drawer.querySelector('.drawer-close').addEventListener('click', () => {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+    });
+
+    document.querySelectorAll('[data-workflow]').forEach(workflow => {
+      const screenImg = workflow.querySelector('.workflow-screen img');
+      const caption = workflow.querySelector('.media-caption');
+      workflow.querySelectorAll('.timeline button').forEach(button => {
+        button.addEventListener('click', () => {
+          workflow.querySelectorAll('.timeline button').forEach(item => item.classList.remove('is-active'));
+          button.classList.add('is-active');
+          screenImg.src = button.dataset.img;
+          screenImg.alt = button.dataset.note;
+          caption.textContent = button.dataset.note;
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-lightbox], .workflow-screen').forEach(item => {
+      item.addEventListener('click', () => {
+        const explicit = item.dataset.lightbox;
+        const img = explicit ? null : item.querySelector('img');
+        lightboxImg.src = explicit || img.src;
+        lightboxImg.alt = img?.alt || '作品图片';
+        lightbox.classList.add('is-open');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightboxImg.removeAttribute('src');
+    }
+
+    lightbox.querySelector('button').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+
+    window.addEventListener('keydown', event => {
+      const tops = posters.map(poster => Math.abs(poster.getBoundingClientRect().top));
+      const current = tops.indexOf(Math.min(...tops));
+      if (event.key === 'ArrowDown' || event.key === 'PageDown') scrollToPoster(Math.min(posters.length - 1, current + 1));
+      if (event.key === 'ArrowUp' || event.key === 'PageUp') scrollToPoster(Math.max(0, current - 1));
+      if (event.key === 'Escape') {
+        closeLightbox();
+        drawer.classList.remove('is-open');
+      }
+    });
+  </script>
+</body>
+</html>
